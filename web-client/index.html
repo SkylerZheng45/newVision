@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ThirdEye Client</title>
+</head>
+
+<body>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCmNuPELGpojRrZBLHUzsFr5lW5sN74Tc8",
+      authDomain: "thirdeye-c428c.firebaseapp.com",
+      databaseURL: "https://thirdeye-c428c.firebaseio.com",
+      projectId: "thirdeye-c428c",
+      storageBucket: "thirdeye-c428c.appspot.com",
+      messagingSenderId: "436915679622",
+      appId: "1:436915679622:web:1fddee6950f10e849afc07",
+      measurementId: "G-FTJDECKG9S"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    // Get a reference to the database service
+    var database = firebase.database();
+
+    function writeUserData(userId, name, email, imageUrl) {
+      firebase.database().ref('users/' + userId).set({
+        username: name,
+        email: email,
+        profile_picture: imageUrl
+      }).then(console.log("Success!"))
+    }
+
+    var test = writeUserData(111, "test", "helloworld@gmail.com", "https://google.com");
+  </script>
+</body>
+
+</html>
