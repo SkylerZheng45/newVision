@@ -10,72 +10,77 @@
 </head>
 
 <body>
-  <!-- <h1 class="title">
+  <h1 class="title">
     <center>ThirdEye</center>
-  </!-->
-  <!-- <h3 class="tagline">
-    <center>We see the world for you.</center>
-  </!-->
 
-  <center>
-    <button id="btn" onclick="btnClick()">Scan
-      Area</button>
-  </center>
+    <h3 class="tagline">
+      <center>We see the world for you.</center>
 
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+      <center>
+        <button id="btn" onclick="btnClick()">Scan
+          Area</button>
+      </center>
+      <p id="desc"></p>
 
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+      <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+
+      <!-- TODO: Add SDKs for Firebase products that you want to use
        https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
-  <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+      <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+      <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
-  <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyCmNuPELGpojRrZBLHUzsFr5lW5sN74Tc8",
-      authDomain: "thirdeye-c428c.firebaseapp.com",
-      databaseURL: "https://thirdeye-c428c.firebaseio.com",
-      projectId: "thirdeye-c428c",
-      storageBucket: "thirdeye-c428c.appspot.com",
-      messagingSenderId: "436915679622",
-      appId: "1:436915679622:web:1fddee6950f10e849afc07",
-      measurementId: "G-FTJDECKG9S"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
+      <script>
+        const sleep = (milliseconds) => {
+          return new Promise(resolve => setTimeout(resolve, milliseconds))
+        }
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyCmNuPELGpojRrZBLHUzsFr5lW5sN74Tc8",
+          authDomain: "thirdeye-c428c.firebaseapp.com",
+          databaseURL: "https://thirdeye-c428c.firebaseio.com",
+          projectId: "thirdeye-c428c",
+          storageBucket: "thirdeye-c428c.appspot.com",
+          messagingSenderId: "436915679622",
+          appId: "1:436915679622:web:1fddee6950f10e849afc07",
+          measurementId: "G-FTJDECKG9S"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
 
-    // Get a reference to the database service
-    var database = firebase.database();
-    var dataGlobal;
-    var leadsRef = database.ref('user');
-    leadsRef.on('value', function (snapshot) {
-      dataGlobal = snapshot.val();
-      if (dataGlobal.distance >= 11)
-        document.body.style.backgroundColor = "#6ffc03"; //green
+        // Get a reference to the database service
+        var database = firebase.database();
+        var dataGlobal;
+        var leadsRef = database.ref('user');
+        leadsRef.on('value', function (snapshot) {
+          dataGlobal = snapshot.val();
+          if (dataGlobal.distance >= 8)
+            document.body.style.backgroundColor = "#6ffc03"; //green
 
-      if (dataGlobal.distance <= 10) {
-        document.body.style.backgroundColor = "#fcc203"; //yellow
-        navigator.vibrate([200, 100, 200]);
-      }
+          if (dataGlobal.distance <= 7) {
+            document.body.style.backgroundColor = "#fcc203"; //yellow
+            navigator.vibrate([200, 100, 200]);
+          }
 
-      if (dataGlobal.distance <= 5) {
-        document.body.style.backgroundColor = "#fc2803"; //red
-        navigator.vibrate([200, 100, 200, 50, 200])
-      }
-    });
+          if (dataGlobal.distance <= 3) {
+            document.body.style.backgroundColor = "#fc2803"; //red
+            responsiveVoice.speak(dataGlobal.label + " is " + dataGlobal.distance + " feet away!")
+            navigator.vibrate([200, 100, 200, 50, 200])
+          }
+        });
 
-    function btnClick() {
-      firebase.database().ref('user/').update({
-        request: true
-      }).then(console.log("Success!"))
-      responsiveVoice.speak(dataGlobal.description);
-      responsiveVoice.speak(dataGlobal.distance + "feet away!")
-    }
+        function btnClick() {
+          firebase.database().ref('user/').update({
+            request: true
+          }).then(console.log("Success!"))
+          sleep(500).then(() => {
+            responsiveVoice.speak(dataGlobal.description);
+          })
+        }
 
-  </script>
+      </script>
 </body>
 
 </html>
