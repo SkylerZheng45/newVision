@@ -141,8 +141,9 @@ def detect_image(local_image_path):
             temp_list.append(object.rectangle.y)
             temp_list.append(object.rectangle.w)
             temp_list.append(object.rectangle.h)
-            list_for_camera.append(temp_list)
-            list_for_camera.append(object.object_property)
+            list_for_camera.append([temp_list,object.object_property])
+            # list_for_camera.append(temp_list)
+            # list_for_camera.append(object.object_property)
     #print()
     '''
     END - Detect Objects - local
