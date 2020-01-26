@@ -73,19 +73,19 @@ def detect_image(local_image_path):
 
     # Get the captions (descriptions) from the response, with confidence level
     #print("Description of local image: ")
-    if (len(description_result.captions) == 0):
-        print("No description detected.")
-    else:
-        for caption in description_result.captions:
-            #print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
-            ref.update({"user":{
-                "description": caption.text,
-                "label": "stuff name",
-                "distance": 4
-               }
-            })
-            break
-    print()
+    # if (len(description_result.captions) == 0):
+    #     print("No description detected.")
+    # else:
+    #     for caption in description_result.captions:
+    #         #print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
+    #         ref.update({"user":{
+    #             "description": caption.text,
+    #             "label": "stuff name",
+    #             "distance": 4
+    #            }
+    #         })
+    #         break
+    # print()
     '''
     END - Describe an Image - local
     '''
