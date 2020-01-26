@@ -3,7 +3,7 @@ import numpy as np
 
 class ObjectMonitor:
     #def __init__(self, img_width, img_height, half_detection_width, half_detection_height,debug_mode=False):
-    def __init__(self, img_width, half_detection_width, outlier_percent=0.2, max_alert_range=4000, min_alert_range=200,debug_mode=False):
+    def __init__(self, img_width, half_detection_width, outlier_percent=0.2, max_alert_range=40000, min_alert_range=200,debug_mode=False):
         """
         Detect close objects from bbox results
         :param img_width: input img width
@@ -30,6 +30,8 @@ class ObjectMonitor:
         min_dist=np.Inf
         result=[]
         for item in bboxes:
+            if item[1] == 'Glasses':
+                continue
             print(item)
             print(self.width_bound)
             x,y,w,h = item[0]
@@ -47,7 +49,7 @@ class ObjectMonitor:
         if len(result)>0:
             if self.debug_mode:
                 print(result[1])
-            result[1]=round(0.00328084*result[1])
+            result[1]=round(0.00328084*result[1], 1)
         return result
 
 

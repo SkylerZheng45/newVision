@@ -61,17 +61,17 @@ def send_description(local_image_path):
     local_image = open(local_image_path, "rb")
 
     # Call API
-    # is_API_ok=False
-    # description_result=None
-    # while not is_API_ok:
-    #     is_API_ok=True
-    #     try:
-    description_result = computervision_client.describe_image_in_stream(local_image)
-        # except:
-        #     print('Description API Failed. Retrying ...')
-        #     time.sleep(1)
-        #     auth_azure()
-        #     is_API_ok=False
+    is_API_ok=False
+    description_result=None
+    while not is_API_ok:
+        is_API_ok=True
+        try:
+            description_result = computervision_client.describe_image_in_stream(local_image)
+        except:
+            print('Description API Failed. Retrying ...')
+            time.sleep(1)
+            auth_azure()
+            is_API_ok=False
 
     # Get the captions (descriptions) from the response, with confidence level
     #print("Description of local image: ")
@@ -163,18 +163,18 @@ def detect_image(local_image_path):
     # Get local image with different objects in it
     local_image_path_objects = local_image_path
     local_image_objects = open(local_image_path_objects, "rb")
-    # # Call API with local image
-    # is_API_ok=False
-    # detect_objects_results_local=None
-    # while not is_API_ok:
-    #     is_API_ok=True
-    #     try:
-    detect_objects_results_local = computervision_client.detect_objects_in_stream(local_image_objects)
-        # except:
-        #     print('Detection API Failed. Retrying ...')
-        #     time.sleep(1)
-        #     auth_azure()
-        #     is_API_ok=False
+    # Call API with local image
+    is_API_ok=False
+    detect_objects_results_local=None
+    while not is_API_ok:
+        is_API_ok=True
+        try:
+            detect_objects_results_local = computervision_client.detect_objects_in_stream(local_image_objects)
+        except:
+            print('Detection API Failed. Retrying ...')
+            time.sleep(1)
+            auth_azure()
+            is_API_ok=False
 
     # Print results of detection with bounding boxes
     #print("Detecting objects in local image:")
