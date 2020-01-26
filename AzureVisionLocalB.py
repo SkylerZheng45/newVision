@@ -40,7 +40,8 @@ END - Authenticate
 '''
 
 
-def detect_image(local_image_path):
+#def detect_image(local_image_path):
+def detect_image(binary_frame):
     list_for_camera = []
     '''
     Describe an Image - local
@@ -48,10 +49,11 @@ def detect_image(local_image_path):
     '''
     print("===== Describe an Image - local =====")
     # Open local image file
-    local_image = open(local_image_path, "rb")
+    #local_image = open(local_image_path, "rb")
 
     # Call API
-    description_result = computervision_client.describe_image_in_stream(local_image)
+    #description_result = computervision_client.describe_image_in_stream(local_image)
+    description_result = computervision_client.describe_image_in_stream(binary_frame)
 
     # Get the captions (descriptions) from the response, with confidence level
     print("Description of local image: ")
@@ -123,6 +125,6 @@ def detect_image(local_image_path):
 
 
 
-local_image_path = "goose.jpg"
-detect_image(local_image_path)
+#local_image_path = "IMG_9408.jpeg"
+#detect_image(local_image_path)
 
