@@ -120,9 +120,10 @@ def detect_image(local_image_path):
     '''
 
     print(list_for_camera)
+    return list_for_camera
 
 
 
-local_image_path = "goose.jpg"
-detect_image(local_image_path)
+#local_image_path = "goose.jpg"
+#detect_image(local_image_path)
 

@@ -73,10 +73,10 @@ def detect_image(binary_frame):
     '''
     print("===== Detect Objects - local =====")
     # Get local image with different objects in it
-    local_image_path_objects = local_image_path
-    local_image_objects = open(local_image_path_objects, "rb")
+    # local_image_path_objects = local_image_path
+    # local_image_objects = open(local_image_path_objects, "rb")
     # Call API with local image
-    detect_objects_results_local = computervision_client.detect_objects_in_stream(local_image_objects)
+    detect_objects_results_local = computervision_client.detect_objects_in_stream(binary_frame)
 
     # Print results of detection with bounding boxes
     print("Detecting objects in local image:")
