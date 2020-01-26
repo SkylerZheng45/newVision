@@ -56,10 +56,10 @@
         var leadsRef = database.ref('user');
         leadsRef.on('value', function (snapshot) {
           dataGlobal = snapshot.val();
-          if (dataGlobal.distance >= 11)
+          if (dataGlobal.distance >= 8)
             document.body.style.backgroundColor = "#6ffc03"; //green
 
-          if (dataGlobal.distance <= 10) {
+          if (dataGlobal.distance <= 7) {
             document.body.style.backgroundColor = "#fcc203"; //yellow
             navigator.vibrate([200, 100, 200]);
           }
