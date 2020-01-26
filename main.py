@@ -44,7 +44,7 @@ while True:
         cv2.imshow('RealSense', color_image)
         cv2.waitKey(1)
 
-    time.sleep(5)
+    time.sleep(0.3)
     # Show images
 
 # Stop streaming
