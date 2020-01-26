@@ -15,9 +15,10 @@ config.enable_stream(rs.stream.depth, img_width, img_height, rs.format.z16, cam_
 config.enable_stream(rs.stream.color, img_width, img_height, rs.format.bgr8, cam_fps)
 pipeline.start(config)
 
-om=ObjectMonitor(img_width, half_detection_width)
 debug_mode=True
+om=ObjectMonitor(img_width, half_detection_width, debug_mode=debug_mode)
 tmp_filename='current.jpg'
+
 while True:
     frames = pipeline.wait_for_frames()
     depth_frame = frames.get_depth_frame()

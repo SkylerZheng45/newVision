@@ -2,8 +2,8 @@
 import numpy as np
 
 class ObjectMonitor:
-    #def __init__(self, img_width, img_height, half_detection_width, half_detection_height):
-    def __init__(self, img_width, half_detection_width, outlier_percent=0.2, max_alert_range=4000, min_alert_range=200):
+    #def __init__(self, img_width, img_height, half_detection_width, half_detection_height,debug_mode=False):
+    def __init__(self, img_width, half_detection_width, outlier_percent=0.2, max_alert_range=4000, min_alert_range=200,debug_mode=False):
         """
         Detect close objects from bbox results
         :param img_width: input img width
@@ -16,6 +16,7 @@ class ObjectMonitor:
         self.outlier_percent=outlier_percent
         self.max_alert_range=max_alert_range
         self.min_alert_range=min_alert_range
+        self.debug_mode=debug_mode
         #self.height_bound = [round(img_height/2 - half_detection_height), round(img_height/2 + half_detection_height)]
 
     def process_bboxes(self, depth_frame, bboxes):
@@ -44,7 +45,8 @@ class ObjectMonitor:
                     min_dist=depth
                     result=[item[1],depth]
         if len(result)>0:
-            print(result[1])
+            if self.debug_mode:
+                print(result[1])
             result[1]*=0.00328084
         return result
 
