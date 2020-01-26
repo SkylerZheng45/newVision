@@ -5,10 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
   <title>ThirdEye Client</title>
 </head>
 
 <body>
+  <!-- <h1 class="title">
+    <center>ThirdEye</center>
+  </!-->
+  <!-- <h3 class="tagline">
+    <center>We see the world for you.</center>
+  </!-->
+
+  <center>
+    <button id="btn" onclick="btnClick()">Scan
+      Area</button>
+  </center>
+
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
 
@@ -16,6 +29,7 @@
        https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+  <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
   <script>
     // Your web app's Firebase configuration
@@ -35,23 +49,31 @@
 
     // Get a reference to the database service
     var database = firebase.database();
-
-    function writeUserData(userId, name, email, imageUrl) {
-      firebase.database().ref('users/' + userId).set({
-        username: name,
-        email: email,
-        profile_picture: imageUrl
-      }).then(console.log("Success!"))
-    }
-
-    var leadsRef = database.ref('boxes');
+    var dataGlobal;
+    var leadsRef = database.ref('user');
     leadsRef.on('value', function (snapshot) {
-      // snapshot.forEach(function (childSnapshot) {
-      //   var childData = childSnapshot.val();
-      //   console.log(childData.height);
-      // });
-      console.log(snapshot.val())
+      dataGlobal = snapshot.val();
+      if (dataGlobal.distance >= 11)
+        document.body.style.backgroundColor = "#6ffc03"; //green
+
+      if (dataGlobal.distance <= 10) {
+        document.body.style.backgroundColor = "#fcc203"; //yellow
+        navigator.vibrate([200, 100, 200]);
+      }
+
+      if (dataGlobal.distance <= 5) {
+        document.body.style.backgroundColor = "#fc2803"; //red
+        navigator.vibrate([200, 100, 200, 50, 200])
+      }
     });
+
+    function btnClick() {
+      firebase.database().ref('user/').update({
+        request: true
+      }).then(console.log("Success!"))
+      responsiveVoice.speak(dataGlobal.description);
+      responsiveVoice.speak(dataGlobal.distance + "feet away!")
+    }
 
   </script>
 </body>
