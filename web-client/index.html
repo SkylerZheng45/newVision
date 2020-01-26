@@ -44,7 +44,15 @@
       }).then(console.log("Success!"))
     }
 
-    var test = writeUserData(111, "test", "helloworld@gmail.com", "https://google.com");
+    var leadsRef = database.ref('boxes');
+    leadsRef.on('value', function (snapshot) {
+      // snapshot.forEach(function (childSnapshot) {
+      //   var childData = childSnapshot.val();
+      //   console.log(childData.height);
+      // });
+      console.log(snapshot.val())
+    });
+
   </script>
 </body>
 
