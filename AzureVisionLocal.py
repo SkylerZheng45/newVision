@@ -147,5 +147,5 @@ def detect_image(local_image_path):
 
 
 
-local_image_path = "dog-and-cat-cover.jpg"
-print(detect_image(local_image_path))
+# local_image_path = "dog-and-cat-cover.jpg"
+# print(detect_image(local_image_path))
