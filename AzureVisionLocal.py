@@ -56,6 +56,13 @@ computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredenti
 '''
 END - Authenticate
 '''
+
+def update_distance(om_result):
+    db.reference('user/').update({
+        "distance": om_result[1],
+        "label": om_result[0]
+    })
+
 def send_description(local_image_path):
     local_image = open(local_image_path, "rb")
 

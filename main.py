@@ -1,7 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-from AzureVisionLocal import detect_image,send_description
+from AzureVisionLocal import *
 from module.object_monitor import ObjectMonitor
 import time
 # Camera Configuration
@@ -30,10 +30,13 @@ while True:
     color_image = np.asanyarray(color_frame.get_data())
     cv2.imwrite(tmp_filename,color_image)
     bboxes=detect_image(tmp_filename)
+    depth_result =om.process_bboxes(depth_image,bboxes)
+    if len(depth_result)>0:
+        update_distance(depth_result)
     send_description(tmp_filename)
     if debug_mode:
         print(bboxes)
-        print(om.process_bboxes(depth_image,bboxes))
+        print(depth_result)
         # Stack both images horizontally
         #images = np.hstack((color_image, depth_colormap))
         #print(depth_image[240,320])
