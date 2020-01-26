@@ -56,7 +56,6 @@ computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredenti
 '''
 END - Authenticate
 '''
-
 def send_description(local_image_path):
     local_image = open(local_image_path, "rb")
 
@@ -66,23 +65,48 @@ def send_description(local_image_path):
     # Get the captions (descriptions) from the response, with confidence level
     #print("Description of local image: ")
 
-    while(True):
-        time.sleep(0.5)
-        if db.reference('/user/request').get():
-            print("got request")
-            if (len(description_result.captions) == 0):
-                print("No description detected.")
-            else:
-                for caption in description_result.captions:
-                    #print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
-                    db.reference('user/').update({
-                        "description": caption.text
-                    })
-                    break
-            db.reference('user/').update({
-                "request":False,
-            })
+    if db.reference('/user/request').get():
+        print("got request")
+        if (len(description_result.captions) == 0):
+            print("No description detected.")
+        else:
+            for caption in description_result.captions:
+                #print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
+                db.reference('user/').update({
+                    "description": caption.text
+                })
+                break
+        db.reference('user/').update({
+            "request":False,
+        })
     print()
+
+# def send_description(local_image_path):
+#     local_image = open(local_image_path, "rb")
+#
+#     # Call API
+#     description_result = computervision_client.describe_image_in_stream(local_image)
+#
+#     # Get the captions (descriptions) from the response, with confidence level
+#     #print("Description of local image: ")
+#
+#     while(True):
+#         time.sleep(0.5)
+#         if db.reference('/user/request').get():
+#             print("got request")
+#             if (len(description_result.captions) == 0):
+#                 print("No description detected.")
+#             else:
+#                 for caption in description_result.captions:
+#                     #print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
+#                     db.reference('user/').update({
+#                         "description": caption.text
+#                     })
+#                     break
+#             db.reference('user/').update({
+#                 "request":False,
+#             })
+#     print()
     '''
     END - Describe an Image - local
     '''
@@ -178,6 +202,6 @@ def detect_image(local_image_path):
 
 
 
-local_image_path = "dog-and-cat-cover.jpg"
-#print(detect_image(local_image_path))
-send_description(local_image_path)
+# local_image_path = "dog-and-cat-cover.jpg"
+# #print(detect_image(local_image_path))
+# send_description(local_image_path)

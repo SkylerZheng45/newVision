@@ -1,7 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-from AzureVisionLocal import detect_image
+from AzureVisionLocal import detect_image,send_description
 from module.object_monitor import ObjectMonitor
 import time
 # Camera Configuration
@@ -30,6 +30,7 @@ while True:
     color_image = np.asanyarray(color_frame.get_data())
     cv2.imwrite(tmp_filename,color_image)
     bboxes=detect_image(tmp_filename)
+    send_description(tmp_filename)
     if debug_mode:
         print(bboxes)
         print(om.process_bboxes(depth_image,bboxes))
