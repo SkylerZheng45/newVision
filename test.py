@@ -1,4 +1,4 @@
-from AzureVisionLocalB import detect_image
+from AzureVisionLocal import detect_image
 from PIL import Image
 import io
 from io import BytesIO

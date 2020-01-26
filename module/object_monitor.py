@@ -23,20 +23,29 @@ class ObjectMonitor:
         Process Bounding Boxes
         :param depth_frame: depth frame as numpy matrix
         :param bboxes: a list of lists containing a list of corrdinates [x,y,w,h] and detected label
-        :return: a list containing detected label and its distance from camera. If empty, no objects within range.
+        :return: a list containing detected label and its distance (feet) from camera. If empty, no objects within range.
             If not empty, it only contains the closest object
         """
         min_dist=np.Inf
         result=[]
         for item in bboxes:
-            bbox = item[0]
-            if bbox[0]>=self.width_bound[0] or bbox[0]+item[2] <= self.width_bound[1]:
-                bbox_depth=depth_frame[bbox[1]:bbox[1]+bbox[3],bbox[0]:bbox[0]+bbox[2]]
+            print(item)
+            print(self.width_bound)
+            x,y,w,h = item[0]
+            if x>=self.width_bound[0] or x+w <= self.width_bound[1]:
+                bbox_depth=depth_frame[y:y+h,x:x+w]
+                bbox_depth=np.around(bbox_depth, decimals=-1)
+                print(bbox_depth.shape)
                 sorted_bbox_depth=np.sort(bbox_depth, axis=None)
-                depth=np.mean(sorted_bbox_depth[sorted_bbox_depth.shape[0]*self.outlier_percent:sorted_bbox_depth.shape[0]*(1-self.outlier_percent)])
+                front_bound=round(sorted_bbox_depth.shape[0]*self.outlier_percent)
+                end_bound=round(sorted_bbox_depth.shape[0]*(1-self.outlier_percent))
+                depth=np.median(sorted_bbox_depth[front_bound:end_bound])
                 if depth>self.min_alert_range and depth<self.max_alert_range and depth<min_dist:
                     min_dist=depth
                     result=[item[1],depth]
+        if len(result)>0:
+            print(result[1])
+            result[1]*=0.00328084
         return result
 
 

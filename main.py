@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 from AzureVisionLocal import detect_image
 from module.object_monitor import ObjectMonitor
+import time
 # Camera Configuration
 img_width=640
 img_height=480
@@ -15,7 +16,7 @@ config.enable_stream(rs.stream.color, img_width, img_height, rs.format.bgr8, cam
 pipeline.start(config)
 
 om=ObjectMonitor(img_width, half_detection_width)
-debug_mode=False
+debug_mode=True
 tmp_filename='current.jpg'
 while True:
     frames = pipeline.wait_for_frames()
@@ -30,14 +31,16 @@ while True:
     bboxes=detect_image(tmp_filename)
     if debug_mode:
         print(bboxes)
+        print(om.process_bboxes(depth_image,bboxes))
         # Stack both images horizontally
         #images = np.hstack((color_image, depth_colormap))
-        print(depth_image[240,320])
+        #print(depth_image[240,320])
+        cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+        cv2.imshow('RealSense', color_image)
+        cv2.waitKey(1)
 
+    time.sleep(5)
     # Show images
-    cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-    cv2.imshow('RealSense', color_image)
-    cv2.waitKey(1)
 
 # Stop streaming
 pipeline.stop()

@@ -103,6 +103,7 @@ def detect_image(local_image_path):
 
     # Get the captions (descriptions) from the response, with confidence level
     #print("Description of local image: ")
+
     if (len(description_result.captions) == 0):
         print("No description detected.")
     else:
@@ -110,11 +111,11 @@ def detect_image(local_image_path):
             #print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
             db.reference('user/').update({
                 "description": caption.text,
-                "label": "stuff name",
-                "distance": 4
             })
             break
     print()
+
+
     '''
     END - Describe an Image - local
     '''
@@ -144,8 +145,9 @@ def detect_image(local_image_path):
             temp_list.append(object.rectangle.y)
             temp_list.append(object.rectangle.w)
             temp_list.append(object.rectangle.h)
-            list_for_camera.append(temp_list)
-            list_for_camera.append(object.object_property)
+            list_for_camera.append([temp_list,object.object_property])
+            # list_for_camera.append(temp_list)
+            # list_for_camera.append(object.object_property)
     #print()
     '''
     END - Detect Objects - local
