@@ -49,7 +49,7 @@ def detect_image(local_image_path):
     print("===== Describe an Image - local =====")
     # Open local image file
     local_image = open(local_image_path, "rb")
-
+    print(local_image)
     # Call API
     description_result = computervision_client.describe_image_in_stream(local_image)
 

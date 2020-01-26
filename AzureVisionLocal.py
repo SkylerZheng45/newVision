@@ -121,7 +121,6 @@ def detect_image(local_image_path):
     '''
     END - Detect Objects - local
     '''
-
     # '''
     # Tag an Image - local
     # This example returns a tag (key word) for each thing in the image.
@@ -150,5 +149,3 @@ def detect_image(local_image_path):
 
 local_image_path = "dog-and-cat-cover.jpg"
 print(detect_image(local_image_path))
-
-
