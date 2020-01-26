@@ -5,47 +5,82 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
   <title>ThirdEye Client</title>
 </head>
 
 <body>
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <h1 class="title">
+    <center>ThirdEye</center>
 
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+    <h3 class="tagline">
+      <center>We see the world for you.</center>
+
+      <center>
+        <button id="btn" onclick="btnClick()">Scan
+          Area</button>
+      </center>
+      <p id="desc"></p>
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+      <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+
+      <!-- TODO: Add SDKs for Firebase products that you want to use
        https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+      <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
-  <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyCmNuPELGpojRrZBLHUzsFr5lW5sN74Tc8",
-      authDomain: "thirdeye-c428c.firebaseapp.com",
-      databaseURL: "https://thirdeye-c428c.firebaseio.com",
-      projectId: "thirdeye-c428c",
-      storageBucket: "thirdeye-c428c.appspot.com",
-      messagingSenderId: "436915679622",
-      appId: "1:436915679622:web:1fddee6950f10e849afc07",
-      measurementId: "G-FTJDECKG9S"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
+      <script>
+        const sleep = (milliseconds) => {
+          return new Promise(resolve => setTimeout(resolve, milliseconds))
+        }
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyCmNuPELGpojRrZBLHUzsFr5lW5sN74Tc8",
+          authDomain: "thirdeye-c428c.firebaseapp.com",
+          databaseURL: "https://thirdeye-c428c.firebaseio.com",
+          projectId: "thirdeye-c428c",
+          storageBucket: "thirdeye-c428c.appspot.com",
+          messagingSenderId: "436915679622",
+          appId: "1:436915679622:web:1fddee6950f10e849afc07",
+          measurementId: "G-FTJDECKG9S"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
 
-    // Get a reference to the database service
-    var database = firebase.database();
+        // Get a reference to the database service
+        var database = firebase.database();
+        var dataGlobal;
+        var leadsRef = database.ref('user');
+        leadsRef.on('value', function (snapshot) {
+          dataGlobal = snapshot.val();
+          if (dataGlobal.distance >= 8)
+            document.body.style.backgroundColor = "#6ffc03"; //green
 
-    function writeUserData(name, email, imageUrl) {
-      firebase.database().ref('data/').set({
-        username: name,
-        email: email,
-        profile_picture: imageUrl
-      }).then(console.log("Success!"))
-    }
+          if (dataGlobal.distance <= 7) {
+            document.body.style.backgroundColor = "#fcc203"; //yellow
+            navigator.vibrate([200, 100, 200]);
+          }
 
-    var test = writeUserData(111, "test", "helloworld@gmail.com", "https://google.com");
-  </script>
+          if (dataGlobal.distance <= 3) {
+            document.body.style.backgroundColor = "#fc2803"; //red
+            responsiveVoice.speak(dataGlobal.label + " is " + dataGlobal.distance + " feet away!")
+            navigator.vibrate([200, 100, 200, 50, 200])
+          }
+        });
+
+        function btnClick() {
+          firebase.database().ref('user/').update({
+            request: true
+          }).then(console.log("Success!"))
+          sleep(500).then(() => {
+            responsiveVoice.speak(dataGlobal.description);
+          })
+        }
+
+      </script>
 </body>
 
 </html>
