@@ -58,6 +58,32 @@ END - Authenticate
 '''
 
 
+def send_description(local_image_path):
+    local_image = open(local_image_path, "rb")
+
+    # Call API
+    description_result = computervision_client.describe_image_in_stream(local_image)
+
+    # Get the captions (descriptions) from the response, with confidence level
+    #print("Description of local image: ")
+    if (len(description_result.captions) == 0):
+        print("No description detected.")
+    else:
+        for caption in description_result.captions:
+            #print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
+            ref.update({"user":{
+                "description": caption.text,
+                "label": "stuff name",
+                "distance": 4
+               }
+            })
+            break
+    print()
+    '''
+    END - Describe an Image - local
+    '''
+
+
 def detect_image(local_image_path):
     list_for_camera = []
     '''
