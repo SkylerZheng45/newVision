@@ -47,7 +47,7 @@ class ObjectMonitor:
         if len(result)>0:
             if self.debug_mode:
                 print(result[1])
-            result[1]*=0.00328084
+            result[1]=round(0.00328084*result[1])ew2
         return result
 
 

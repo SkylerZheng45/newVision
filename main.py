@@ -1,7 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-from AzureVisionLocal import *
+from AzureVisionLocal import detect_image,send_description,update_distance
 from module.object_monitor import ObjectMonitor
 import time
 # Camera Configuration
