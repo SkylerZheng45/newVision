@@ -1,16 +1,23 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-
+from AzureVisionLocal import detect_image,send_description,update_distance
+from module.object_monitor import ObjectMonitor
+import time
 # Camera Configuration
 img_width=640
 img_height=480
 cam_fps=30
+half_detection_width=150
 pipeline = rs.pipeline()
 config = rs.config()
 config.enable_stream(rs.stream.depth, img_width, img_height, rs.format.z16, cam_fps)
 config.enable_stream(rs.stream.color, img_width, img_height, rs.format.bgr8, cam_fps)
 pipeline.start(config)
+
+debug_mode=True
+om=ObjectMonitor(img_width, half_detection_width, debug_mode=debug_mode)
+tmp_filename='current.jpg'
 
 while True:
     frames = pipeline.wait_for_frames()
@@ -21,17 +28,24 @@ while True:
 
     depth_image = np.asanyarray(depth_frame.get_data())
     color_image = np.asanyarray(color_frame.get_data())
+    cv2.imwrite(tmp_filename,color_image)
+    bboxes=detect_image(tmp_filename)
+    depth_result =om.process_bboxes(depth_image,bboxes)
+    if len(depth_result)>0:
+        update_distance(depth_result)
+    send_description(tmp_filename)
+    if debug_mode:
+        print(bboxes)
+        print(depth_result)
+        # Stack both images horizontally
+        #images = np.hstack((color_image, depth_colormap))
+        #print(depth_image[240,320])
+        cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+        cv2.imshow('RealSense', color_image)
+        cv2.waitKey(1)
 
-    # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-    depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
-
-    # Stack both images horizontally
-    images = np.hstack((color_image, depth_colormap))
-    print(depth_image[240,320])
+    time.sleep(5)
     # Show images
-    cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-    cv2.imshow('RealSense', images)
-    cv2.waitKey(1)
 
 # Stop streaming
 pipeline.stop()
