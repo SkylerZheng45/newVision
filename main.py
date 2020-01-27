@@ -20,7 +20,11 @@ om=ObjectMonitor(img_width, half_detection_width, debug_mode=debug_mode)
 tmp_filename='current.jpg'
 
 while True:
-    frames = pipeline.wait_for_frames()
+    try:
+        frames = pipeline.wait_for_frames()
+    except:
+        time.sleep(1)
+        continue
     depth_frame = frames.get_depth_frame()
     color_frame = frames.get_color_frame()
     if not depth_frame or not color_frame:
