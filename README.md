@@ -10,7 +10,7 @@ It is a real-time vision detection system using a realsense camera to help visua
 * Intel RealSense Depth Camera D435i
 * Microsoft Azure Computer Vision
 * Google Firebase Real-time DB
-* Javascript - Web Development
+* Javascript - Frontend
 * Python - Backend
 
 ## Structure
